@@ -7,19 +7,19 @@ const cors 		= require('cors');
 
 app.use(cors());
 
-let clients = 0
+let clients = [];
 
 io.on('connection', function(socket){
 	console.log('New Socket Connected with =>'+ socket.id);
 	socket.on('NewClient', function(){
-		if(clients < 2) {
-			if(clients == 1){
+		if(clients.length < 2) {
+			if(clients.length == 1){
 				this.emit('CreatePeer')
 			}
 		} else {
 			this.emit('SessionActive')
 		}
-		clients++;
+		clients.push(socket.id);
 	})
 	socket.on('Offer', SendOffer)
 	socket.on('Answer', SendAnswer)
@@ -27,8 +27,9 @@ io.on('connection', function(socket){
 })
 
 function Disconnect(){
-	if(clients > 0){
-		clients--
+	console.log("A use has been disconnected with =>"+ socket.id);
+	if(clients.length > 0){
+		clients.pop(socket.id);
 	}
 }
 
