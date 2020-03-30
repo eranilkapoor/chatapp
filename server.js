@@ -19,6 +19,10 @@ io.on('connection', function(socket){
 		socket.broadcast.emit('webnzasupport','a new user has joined the room');
 	});
 
+	socket.on('chatMessage', function(data){
+		socket.broadcast.emit('onChatMessage', data);
+	});
+
 	socket.on('NewClient', function(){
 		if(clients.length < 2) {
 			if(clients.length == 1){
