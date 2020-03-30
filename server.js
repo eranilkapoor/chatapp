@@ -6,11 +6,11 @@ const port 		= process.env.PORT || 3000;
 const cors 		= require('cors');
 
 app.use(cors());
-app.use(express.static('public'));
 
 let clients = 0
 
 io.on('connection', function(socket){
+	console.log('New Socket Connected with =>'+ socket.id);
 	socket.on('NewClient', function(){
 		if(clients < 2) {
 			if(clients == 1){
