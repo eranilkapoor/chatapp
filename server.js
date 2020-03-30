@@ -13,10 +13,7 @@ let clients = [];
 io.on('connection', function(socket){
 	console.log('New Socket Connected with =>'+ socket.id);
 	socket.join('webnzasupport', () => {
-		let rooms = Object.keys(socket.rooms);
-		console.log(rooms);
-		//io.to('webnzasupport').emit('webnzasupport','a new user has joined the room');
-		socket.broadcast.emit('webnzasupport','a new user has joined the room');
+		socket.broadcast.emit('webnzasupport','A new user has joined the room');
 	});
 
 	socket.on('chatMessage', function(data){
