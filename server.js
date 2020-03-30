@@ -2,8 +2,9 @@ const express   = require('express');
 const app 		= express();
 const http 		= require('http').Server(app);
 const io 		= require('socket.io')(http);
-const port 		= process.env.PORT || 3000;
 const cors 		= require('cors');
+
+const port 		= process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -23,15 +24,10 @@ io.on('connection', function(socket){
 	})
 	socket.on('Offer', SendOffer)
 	socket.on('Answer', SendAnswer)
-	socket.on('disconnect', Disconnect)
-})
-
-function Disconnect(){
-	console.log("A use has been disconnected with =>"+ socket.id);
-	if(clients.length > 0){
-		clients.pop(socket.id);
-	}
-}
+	socket.on('disconnect', function(){
+		console.log("A use has been disconnected");
+	});
+});
 
 function SendOffer(offer){
 	this.broadcast.emit('BackOffer', offer)
