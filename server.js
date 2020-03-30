@@ -15,7 +15,8 @@ io.on('connection', function(socket){
 	socket.join('webnzasupport', () => {
 		let rooms = Object.keys(socket.rooms);
 		console.log(rooms);
-		io.to('webnzasupport').emit('webnzasupport','a new user has joined the room');
+		//io.to('webnzasupport').emit('webnzasupport','a new user has joined the room');
+		socket.broadcast.emit('webnzasupport','a new user has joined the room');
 	});
 
 	socket.on('NewClient', function(){
