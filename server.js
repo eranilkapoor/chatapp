@@ -17,7 +17,6 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('chatMessage', function(data){
-		console.log(data);
 		socket.broadcast.emit('onChatMessage', data);
 	});
 
@@ -34,7 +33,7 @@ io.on('connection', function(socket){
 	socket.on('Offer', SendOffer)
 	socket.on('Answer', SendAnswer)
 	socket.on('disconnect', function(reason){
-		console.log("A use has been disconnected"+ reason);
+		console.log("A use has been disconnected "+ reason);
 	});
 });
 
