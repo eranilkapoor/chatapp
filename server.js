@@ -37,6 +37,16 @@ io.on('connection', function(socket){
 		}
 	});
 
+	socket.on('updateTyping', function(data){
+		if(data.roomName === 'webnzasupport'){
+			socket.broadcast.emit('onUpdateTyping', data);
+		} else {
+			let secret = 'xYz';
+			data.roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+			socket.to(data.roomName).emit('onUpdateTyping', data);
+		}
+	});
+
 	socket.on('joinRoom', function(data){
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
