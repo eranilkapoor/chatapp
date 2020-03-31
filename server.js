@@ -17,7 +17,17 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('chatMessage', function(data){
-		socket.broadcast.emit('onChatMessage', data);
+		if(data.roomName === 'webnzasupport'){
+			socket.broadcast.emit('onChatMessage', data);
+		} else {
+			socket.to(data.roomName).emit('onChatMessage', data);
+		}
+	});
+
+	socket.on('joinRoom', function(data){
+		socket.join(data.roomName, function(){
+			socket.to(data.roomName).emit('A new User Joined');
+		});
 	});
 
 	socket.on('NewClient', function(){
