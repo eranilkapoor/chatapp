@@ -12,9 +12,7 @@ let clients = [];
 
 io.on('connection', function(socket){
 	console.log('New Socket Connected with =>'+ socket.id);
-	socket.join('webnzasupport', () => {
-		socket.broadcast.emit('webnzasupport','A new user has joined the room');
-	});
+	socket.join('webnzasupport');
 
 	socket.on('keepMeActive', function(data){
 		if(data.member && data.email && data.username){
