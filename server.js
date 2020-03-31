@@ -32,8 +32,8 @@ io.on('connection', function(socket){
 			socket.broadcast.emit('onChatMessage', data);
 		} else {
 			let secret = 'xYz';
-			let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
-			socket.to(roomName).emit('onChatMessage', data);
+			data.roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+			socket.to(data.roomName).emit('onChatMessage', data);
 		}
 	});
 
