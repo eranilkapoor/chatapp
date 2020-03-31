@@ -16,6 +16,19 @@ io.on('connection', function(socket){
 		socket.broadcast.emit('webnzasupport','A new user has joined the room');
 	});
 
+	socket.on('keepMeActive', function(data){
+		if(data.member && data.email && data.username){
+			let newuser = {
+				"username": data.username,
+				"email": data.email,
+				"member": data.member,
+				"status": "Online"
+			};
+
+			socket.broadcast.emit('onKeepMeActive', newuser);
+		}
+	});
+
 	socket.on('chatMessage', function(data){
 		if(data.roomName === 'webnzasupport'){
 			socket.broadcast.emit('onChatMessage', data);
