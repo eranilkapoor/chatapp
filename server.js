@@ -38,6 +38,7 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('updateTyping', function(data){
+		console.log(data.msg);
 		if(data.roomName === 'webnzasupport'){
 			socket.broadcast.emit('onUpdateTyping', data);
 		} else {
