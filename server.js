@@ -33,14 +33,16 @@ io.on('connection', function(socket){
 		if(data.roomName === 'webnzasupport'){
 			socket.broadcast.emit('onChatMessage', data);
 		} else {
-			socket.to(data.roomName).emit('onChatMessage', data);
+			let secret = 'xYz';
+			let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+			socket.to(roomName).emit('onChatMessage', data);
 		}
 	});
 
 	socket.on('joinRoom', function(data){
-		socket.join(data.roomName, function(){
-			socket.to(data.roomName).emit('A new User Joined');
-		});
+		let secret = 'xYz';
+		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+		socket.join(roomName);
 	});
 
 	socket.on('NewClient', function(){
