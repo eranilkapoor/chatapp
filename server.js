@@ -68,6 +68,7 @@ io.on('connection', function(socket){
 	socket.on('answer', SendAnswer)
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected "+ reason);
+		clients--;
 	});
 });
 
