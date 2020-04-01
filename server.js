@@ -84,6 +84,31 @@ io.on('connection', function(socket){
 			clients--;
 		}
 	});
+
+	socket.on('newAudioClient', function(){
+		console.log("New Client added to audio chat");
+		if(clients < 2) {
+			if(clients == 1){
+				console.log("Audio chat started");
+				this.emit('createAudioPeer')
+			}
+		} else {
+			console.log("Session already active");
+			this.emit('sessionAudioActive')
+		}
+		clients++;
+		console.log("Total clients =>"+ clients);
+	});
+
+	socket.on('offerAudio', function(offer){
+		console.log("Call to offerAudio");
+		this.broadcast.emit('backAudioOffer', offer);
+	});
+
+	socket.on('answerAudio', function(data){
+		console.log("call to answerAudio");
+		this.broadcast.emit('backAudioAnswer', data);
+	});
 });
 
 http.listen(port, () => console.log(`Active on ${port} port`));
