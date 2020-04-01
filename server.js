@@ -65,13 +65,16 @@ io.on('connection', function(socket){
 			this.emit('sessionActive')
 		}
 		clients++;
+		console.log("Total clients =>"+ clients);
 	});
 
 	socket.on('offer', function(){
+		console.log("Call to offer");
 		this.broadcast.emit('backOffer', offer);
 	});
 
 	socket.on('answer', function(data){
+		console.log("call to answer");
 		this.broadcast.emit('backAnswer', data);
 	});
 
