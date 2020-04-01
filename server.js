@@ -54,30 +54,31 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('newClient', function(){
+		console.log("New Client added to video chat");
 		if(clients < 2) {
 			if(clients == 1){
+				console.log("Video chat started");
 				this.emit('createPeer')
 			}
 		} else {
+			console.log("Session already active");
 			this.emit('sessionActive')
 		}
 		clients++;
 	});
 
-	socket.on('offer', SendOffer)
-	socket.on('answer', SendAnswer)
+	socket.on('offer', function(){
+		this.broadcast.emit('backOffer', offer);
+	});
+
+	socket.on('answer', function(data){
+		this.broadcast.emit('backAnswer', data);
+	});
+
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected "+ reason);
 		clients--;
 	});
 });
-
-function SendOffer(offer){
-	this.broadcast.emit('backOffer', offer)
-}
-
-function SendAnswer(data){
-	this.broadcast.emit('backAnswer', data);
-}
 
 http.listen(port, () => console.log(`Active on ${port} port`));
