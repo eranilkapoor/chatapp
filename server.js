@@ -80,7 +80,9 @@ io.on('connection', function(socket){
 
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected "+ reason);
-		clients--;
+		if(clients > 0){
+			clients--;
+		}
 	});
 });
 
