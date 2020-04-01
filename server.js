@@ -68,7 +68,7 @@ io.on('connection', function(socket){
 		console.log("Total clients =>"+ clients);
 	});
 
-	socket.on('offer', function(){
+	socket.on('offer', function(offer){
 		console.log("Call to offer");
 		this.broadcast.emit('backOffer', offer);
 	});
