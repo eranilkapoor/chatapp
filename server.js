@@ -74,6 +74,13 @@ io.on('connection', function(socket){
 		this.to(roomName).emit('backAnswer', data.data);
 	});
 
+	socket.on('leaveVideoChat', function(data){
+		console.log("call to leaveVideoChat");
+		let secret = 'xYz';
+		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+		socket.leave(roomName);
+	});
+
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected =>"+ reason);
 	});
