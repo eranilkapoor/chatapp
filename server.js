@@ -10,6 +10,8 @@ app.use(cors());
 
 let clients = 0;
 
+let onlineUsers = [];
+
 io.on('connection', function(socket){
 	console.log('New Socket Connected with =>'+ socket.id);
 	socket.join('webnzasupport');
@@ -20,9 +22,10 @@ io.on('connection', function(socket){
 				"username": data.username,
 				"email": data.email,
 				"member": data.member,
-				"status": "Online"
+				"status": "Online",
+				"currentSocket": socket.id
 			};
-
+			onlineUsers[newuser.member] = newuser;
 			socket.broadcast.emit('onKeepMeActive', newuser);
 		}
 	});
@@ -54,35 +57,25 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('newClient', function(){
-		console.log("New Client added to video chat");
-		if(clients < 2) {
-			if(clients == 1){
-				console.log("Video chat started");
-				this.emit('createPeer')
-			}
-		} else {
-			console.log("Session already active");
-			this.emit('sessionActive')
-		}
-		clients++;
-		console.log("Total clients =>"+ clients);
+		this.emit('createPeer')
 	});
 
 	socket.on('offer', function(offer){
 		console.log("Call to offer");
-		this.broadcast.emit('backOffer', offer);
+		let secret = 'xYz';
+		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
+		this.to(roomName).emit('backOffer', offer);
 	});
 
 	socket.on('answer', function(data){
 		console.log("call to answer");
-		this.broadcast.emit('backAnswer', data);
+		let secret = 'xYz';
+		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+		this.to(roomName).emit('backAnswer', data.data);
 	});
 
 	socket.on('disconnect', function(reason){
-		console.log("A use has been disconnected "+ reason);
-		if(clients > 0){
-			clients--;
-		}
+		console.log("A use has been disconnected =>"+ reason);
 	});
 
 	socket.on('newAudioClient', function(){
