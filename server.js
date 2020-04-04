@@ -56,7 +56,7 @@ io.on('connection', function(socket){
 		socket.join(roomName);
 	});
 
-	socket.on('newClient', function(){
+	socket.on('newVideoClient', function(){
 		this.emit('createPeer')
 	});
 
