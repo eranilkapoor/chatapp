@@ -57,25 +57,48 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('newVideoClient', function(){
-		this.emit('createPeer')
+
+		this.emit('createVideoPeer');
 	});
 
-	socket.on('offer', function(offer){
-		console.log("Call to offer");
+	socket.on('offerVideoCall', function(offer){
 		let secret = 'xYz';
 		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
-		this.to(roomName).emit('backOffer', offer);
+		this.to(roomName).emit('backOfferVideoCall', offer);
 	});
 
-	socket.on('answer', function(data){
-		console.log("call to answer");
+	socket.on('answerVideoCall', function(data){
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
-		this.to(roomName).emit('backAnswer', data.data);
+		this.to(roomName).emit('backAnswerVideoCall', data.data);
 	});
 
-	socket.on('leaveVideoChat', function(data){
-		console.log("call to leaveVideoChat");
+	socket.on('leaveVideoCall', function(data){
+		console.log("call to leaveVideoCall");
+		let secret = 'xYz';
+		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+		socket.leave(roomName);
+	});
+
+	socket.on('newAudioClient', function(){
+
+		this.emit('createAudioPeer');
+	});
+
+	socket.on('offerAudioCall', function(offer){
+		let secret = 'xYz';
+		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
+		this.to(roomName).emit('backOfferAudioCall', offer);
+	});
+
+	socket.on('answerAudioCall', function(data){
+		let secret = 'xYz';
+		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+		this.to(roomName).emit('backAnswerAudioCall', data);
+	});
+
+	socket.on('leaveAudioCall', function(data){
+		console.log("call to leaveAudioCall");
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
 		socket.leave(roomName);
@@ -83,31 +106,6 @@ io.on('connection', function(socket){
 
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected =>"+ reason);
-	});
-
-	socket.on('newAudioClient', function(){
-		console.log("New Client added to audio chat");
-		if(clients < 2) {
-			if(clients == 1){
-				console.log("Audio chat started");
-				this.emit('createAudioPeer')
-			}
-		} else {
-			console.log("Session already active");
-			this.emit('sessionAudioActive')
-		}
-		clients++;
-		console.log("Total clients =>"+ clients);
-	});
-
-	socket.on('offerAudio', function(offer){
-		console.log("Call to offerAudio");
-		this.broadcast.emit('backAudioOffer', offer);
-	});
-
-	socket.on('answerAudio', function(data){
-		console.log("call to answerAudio");
-		this.broadcast.emit('backAudioAnswer', data);
 	});
 });
 
