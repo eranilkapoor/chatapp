@@ -25,7 +25,7 @@ io.on('connection', function(socket){
 				"status": "Online",
 				"currentSocket": socket.id
 			};
-			onlineUsers[newuser.member] = newuser;
+			onlineUsers["MEMBER-"+ newuser.member] = newuser;
 			socket.broadcast.emit('onKeepMeActive', newuser);
 		}
 		console.log(onlineUsers);
