@@ -28,6 +28,7 @@ io.on('connection', function(socket){
 			onlineUsers[newuser.member] = newuser;
 			socket.broadcast.emit('onKeepMeActive', newuser);
 		}
+		console.log(onlineUsers);
 	});
 
 	socket.on('chatMessage', function(data){
