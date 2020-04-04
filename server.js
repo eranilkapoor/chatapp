@@ -22,7 +22,7 @@ io.on('connection', function(socket){
 				"username": data.username,
 				"email": data.email,
 				"member": data.member,
-				"status": "Online",
+				"status": '1',
 				"currentSocket": socket.id
 			};
 			onlineUsers["MEMBER-"+ newuser.member] = newuser;
@@ -107,6 +107,7 @@ io.on('connection', function(socket){
 
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected =>"+ reason);
+		console.log(socket);
 	});
 });
 
