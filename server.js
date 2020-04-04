@@ -107,7 +107,6 @@ io.on('connection', function(socket){
 
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected =>"+ reason);
-		console.log(socket);
 	});
 });
 
