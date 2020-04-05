@@ -117,6 +117,14 @@ io.on('connection', function(socket){
 		socket.leave(roomName);
 	});
 
+	socket.on('muteMyAudio', function(data){
+		this.emit('onMuteMyAudio', data);
+	});
+
+	socket.on('muteMyVideo', function(data){
+		this.emit('onMuteMyVideo', data);
+	});
+
 	socket.on('disconnect', function(reason){
 		console.log("A use has been disconnected =>"+ reason);
 	});
