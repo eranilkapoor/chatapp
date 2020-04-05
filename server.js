@@ -8,8 +8,6 @@ const port 		= process.env.PORT || 3000;
 
 app.use(cors());
 
-let clients = 0;
-
 let onlineUsers = [];
 
 io.on('connection', function(socket){
@@ -23,7 +21,8 @@ io.on('connection', function(socket){
 				"email": data.email,
 				"member": data.member,
 				"status": '1',
-				"currentSocket": socket.id
+				"currentSocket": socket.id,
+				"callStatus": false
 			};
 			onlineUsers["MEMBER-"+ newuser.member] = newuser;
 			socket.broadcast.emit('onKeepMeActive', newuser);
@@ -64,6 +63,15 @@ io.on('connection', function(socket){
 	socket.on('offerVideoCall', function(offer){
 		let secret = 'xYz';
 		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
+		let opponentData = onlineUsers["MEMBER-"+ offer.receiverID];
+		if(opponentData.member && opponentData.member == offer.receiverID){
+			if(io.sockets.adapter.rooms[roomName]){
+				console.log(io.sockets.adapter.rooms[roomName]);
+			}
+		} else {
+			//User not online or data not exist
+			console.log('User not online or data not exist');
+		}
 		this.to(roomName).emit('backOfferVideoCall', offer);
 	});
 
