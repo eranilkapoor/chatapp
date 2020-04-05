@@ -94,7 +94,7 @@ io.on('connection', function(socket){
 	socket.on('answerAudioCall', function(data){
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
-		this.to(roomName).emit('backAnswerAudioCall', data);
+		this.to(roomName).emit('backAnswerAudioCall', data.data);
 	});
 
 	socket.on('leaveAudioCall', function(data){
