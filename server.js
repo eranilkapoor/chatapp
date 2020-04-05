@@ -69,17 +69,14 @@ io.on('connection', function(socket){
 			if(io.sockets.adapter.rooms[roomName]){
 				if(io.sockets.adapter.rooms[roomName].sockets[opponentData.currentSocket]){
 					this.to(roomName).emit('backOfferVideoCall', offer);
-					console.log("DATATTTATATATAT= >"+ offer.opponentStatus);
 				} else {
 					offer.opponentStatus = 2;
 					io.to(opponentData.currentSocket).emit('backOfferVideoCall', offer);
-					console.log("DATATTTATATATAT= >"+ offer.opponentStatus);
 				}
 			}
 		} else {
 			offer.opponentStatus = 0;
 			this.emit('backOfferVideoCall', offer);
-			console.log("DATATTTATATATAT= >"+ offer.opponentStatus);
 		}
 	});
 
