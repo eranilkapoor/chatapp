@@ -72,7 +72,7 @@ io.on('connection', function(socket){
 					console.log("DATATTTATATATAT= >"+ offer.opponentStatus);
 				} else {
 					offer.opponentStatus = 2;
-					this.to(opponentData.currentSocket).emit('backOfferVideoCall', offer);
+					io.to(opponentData.currentSocket).emit('backOfferVideoCall', offer);
 					console.log("DATATTTATATATAT= >"+ offer.opponentStatus);
 				}
 			}
