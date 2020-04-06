@@ -64,19 +64,16 @@ io.on('connection', function(socket){
 		let secret = 'xYz';
 		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
 		let opponentData = onlineUsers["MEMBER-"+ offer.receiverID];
-		offer.opponentStatus = 1;
 		if(opponentData && opponentData.member && opponentData.member == offer.receiverID){
 			if(io.sockets.adapter.rooms[roomName]){
 				if(io.sockets.adapter.rooms[roomName].sockets[opponentData.currentSocket]){
 					this.to(roomName).emit('backOfferVideoCall', offer);
 				} else {
-					offer.opponentStatus = 2;
-					io.to(opponentData.currentSocket).emit('backOfferVideoCall', offer);
+					io.to(opponentData.currentSocket).emit('onVideoCallNotification', offer);
 				}
 			}
 		} else {
-			offer.opponentStatus = 0;
-			this.emit('backOfferVideoCall', offer);
+			this.emit('notOnlineUser', offer);
 		}
 	});
 
