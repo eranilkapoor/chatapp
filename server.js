@@ -87,10 +87,10 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('leaveVideoCall', function(data){
-		console.log("call to leaveVideoCall");
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
 		socket.leave(roomName);
+		this.emit('onLeaveVideoCall', data);
 	});
 
 	socket.on('newAudioClient', function(){
@@ -111,10 +111,10 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('leaveAudioCall', function(data){
-		console.log("call to leaveAudioCall");
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
 		socket.leave(roomName);
+		this.emit('onLeaveAudioCall', data);
 	});
 
 	socket.on('muteMyAudio', function(data){
