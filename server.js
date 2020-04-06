@@ -61,18 +61,22 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('offerVideoCall', function(offer){
+		console.log("CALL offer Videocall");
 		let secret = 'xYz';
 		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
 		let opponentData = onlineUsers["MEMBER-"+ offer.receiverID];
 		if(opponentData && opponentData.member && opponentData.member == offer.receiverID){
 			if(io.sockets.adapter.rooms[roomName]){
 				if(io.sockets.adapter.rooms[roomName].sockets[opponentData.currentSocket]){
+					console.log("CALL backOfferVideoCall");
 					this.to(roomName).emit('backOfferVideoCall', offer);
 				} else {
+					console.log("CALL onVideoCallNotification");
 					io.to(opponentData.currentSocket).emit('onVideoCallNotification', offer);
 				}
 			}
 		} else {
+			console.log("CALL notOnline user");
 			this.emit('notOnlineUser', offer);
 		}
 	});
