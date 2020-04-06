@@ -84,6 +84,27 @@ io.on('connection', function(socket){
 		}
 	});
 
+	socket.on('acceptVideoCall', function(data){
+		let secret = 'xYz';
+		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
+		socket.join(roomName);
+		let opponentData = onlineUsers["MEMBER-"+ data.receiverID];
+		if(opponentData && opponentData.member && opponentData.member == data.receiverID){
+			if(io.sockets.adapter.rooms[roomName]){
+				if(io.sockets.adapter.rooms[roomName].sockets[opponentData.currentSocket]){
+					console.log("CALL backOfferVideoCall");
+					this.to(roomName).emit('backOfferVideoCall', data.data);
+				} else {
+					console.log("CALL onVideoCallNotification");
+					io.to(opponentData.currentSocket).emit('onVideoCallNotification', data.data);
+				}
+			}
+		} else {
+			console.log("CALL notOnline user");
+			this.emit('notOnlineUser', data.data);
+		}
+	});
+
 	socket.on('answerVideoCall', function(data){
 		let secret = 'xYz';
 		let roomName = 'user'+ (data.senderID * data.receiverID) + secret;
