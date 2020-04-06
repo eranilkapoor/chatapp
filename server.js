@@ -62,9 +62,12 @@ io.on('connection', function(socket){
 
 	socket.on('offerVideoCall', function(offer){
 		console.log("CALL offer Videocall");
+		console.log(offer);
 		let secret = 'xYz';
 		let roomName = 'user'+ (offer.senderID * offer.receiverID) + secret;
 		let opponentData = onlineUsers["MEMBER-"+ offer.receiverID];
+		console.log("opponentData =>");
+		console.log(opponentData);
 		if(opponentData && opponentData.member && opponentData.member == offer.receiverID){
 			if(io.sockets.adapter.rooms[roomName]){
 				if(io.sockets.adapter.rooms[roomName].sockets[opponentData.currentSocket]){
