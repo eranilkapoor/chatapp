@@ -127,4 +127,8 @@ io.on('connection', function(socket){
 	});
 });
 
+app.get('/',(req, res)=>{
+	res.send('Hello World!');
+});
+
 http.listen(port, () => console.log(`Active on ${port} port`)); 
